@@ -1,0 +1,385 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-input {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #e9e9e9;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 130px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  margin-right: 30px;
+}
+
+.custom-file-input:hover {
+  background-color: #555;
+}
+
+.custom-file-input::file-selector-button {
+  padding: 0;
+  margin: 0;
+}
+
+.file-upload-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #e9e9e9;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.file-upload-label:hover {
+  background-color: #ccc;
+}
+
+.file-upload-input {
+  display: none;
+}
+
+.fa-cloud-upload-alt {
+  margin-right: 8px;
+}
+.fa-file {
+  margin-right: 8px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  /* margin-right: 10px; */
+}
+
+button:hover {
+  background-color: #555;
+}
+
+.layout-toggle {
+  /* margin-bottom: 20px; */
+  text-align: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 20px;
+}
+
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.grid-item {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.grid-item h3 {
+  margin-top: 0;
+}
+
+.grid-item img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.header-logo {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 4px;
+  align-self: center;
+}
+
+.image-gallery {
+  width: 100%;
+}
+
+.image-gallery-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+
+.modal-close-button {
+  font-size: 24px;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0px 8px;
+}
+
+.modal-close-button:hover {
+  color: #ff3333;
+}
+
+.image-gallery-slide img {
+  max-height: 600px;
+  object-fit: contain;
+}
+
+.image-gallery-thumbnails-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.image-gallery-thumbnail {
+  border: 2px solid transparent;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.image-gallery-thumbnail.active {
+  border-color: #333;
+}
+
+.image-gallery-thumbnail img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .grid-item img {
+    max-height: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #333;
+    color: #fff;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .header-logo {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    justify-content: center;
+  }
+
+  .header-button {
+    margin-left: 16px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #555;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 134px;
+    margin: 10px;
+  }
+
+  .header-button:hover {
+    background-color: #777;
+  }
+
+  .custom-file-input {
+    margin-left: 16px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #e9e9e9;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 110px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #333;
+  animation: spin 1s linear infinite;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
+
+.loading-text {
+  margin-left: 8px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 8px;
+  height: 25px;
+}
+
+.no-images-container,
+.no-thumbnails-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: calc(100vh - 25px - 60px);
+}
+
+.no-images-container h1,
+.no-thumbnails-container h1 {
+  /* font-size: 16px; */
+  color: #888;
+  text-align: center;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 25px - 60px);
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.loading-container h1 {
+  /* font-size: 16px; */
+  color: #888;
+  text-align: center;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pagination li a {
+  display: block;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pagination li.active a {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination li a:hover {
+  background-color: #f5f5f5;
+}
