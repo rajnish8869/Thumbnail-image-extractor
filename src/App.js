@@ -386,7 +386,7 @@ function App() {
             <>
               <div
                 className={
-                  layout === "grid" ? "grid-container" : "list-container"
+                  layout === "grid" ? "grid-container customScrollBar" : "list-container customScrollBar"
                 }
               >
                 {renderImages()}
