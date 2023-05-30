@@ -18,6 +18,10 @@ input[type="file"] {
   display: none;
 }
 
+.Select-icon input[type="checkbox"] {
+  height: 18px;
+}
+
 .custom-file-input {
   display: inline-block;
   padding: 8px 12px;
@@ -465,4 +469,43 @@ button:hover {
 
 .scroll-to-top:hover {
   opacity: 1;
+}
+
+.Select-icon {
+  display: flex;
+  place-content: center;
+  align-items: self-start;
+}
+
+.grid-item.selected {
+  background-color: #8d8c8c;
+}
+
+.unselect-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #f44336;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s;
+}
+
+.unselect-button:hover {
+  background-color: #d32f2f;
+}
+
+.unselect-button:focus {
+  outline: none;
+}
+
+.unselect-button svg {
+  font-size: 18px;
 }
