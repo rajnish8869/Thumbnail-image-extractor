@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import JSZip from "jszip";
 import Modal from "react-modal";
 import ImageGallery from "react-image-gallery";
@@ -16,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const imageGalleryRef = useRef(null);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -178,24 +179,18 @@ function App() {
     setIsGalleryOpen(false);
   };
 
-  const handleImageGalleryKeyPress = (event) => {
-    if (event.key === "+" || event.key === "=") {
-      event.preventDefault();
-      handleZoomIn();
-    } else if (event.key === "-" || event.key === "Minus") {
-      event.preventDefault();
-      handleZoomOut();
+  const handleZoomIn = () => {
+    const images = document.getElementsByClassName("image-gallery-image");
+    for (let i = 0; i < images.length; i++) {
+      images[i].style.transform = "scale(1.2)";
     }
   };
 
-  const handleZoomIn = () => {
-    const gallery = document.getElementsByClassName("image-gallery-slide")[0];
-    gallery.imageGallery.current.scaleTo(1.2);
-  };
-
   const handleZoomOut = () => {
-    const gallery = document.getElementsByClassName("image-gallery-slide")[0];
-    gallery.imageGallery.current.scaleTo(1);
+    const images = document.getElementsByClassName("image-gallery-image");
+    for (let i = 0; i < images.length; i++) {
+      images[i].style.transform = "scale(1)";
+    }
   };
 
   const renderImages = () => {
@@ -208,7 +203,10 @@ function App() {
     }
 
     return extractedImages.map((image, index) => (
-      <div key={index} className="grid-item">
+      <div
+        key={index}
+        className={layout === "grid" ? "grid-item" : "list-item"}
+      >
         <h3>{image.originalAlt}</h3>
         <img
           src={image.original}
@@ -288,12 +286,21 @@ function App() {
           </button>
         </div>
         <div className="layout-toggle">
-          <button onClick={toggleLayout} className="header-icon-button">
-            {layout === "grid" ? (
-              <FontAwesomeIcon icon={faBars} />
-            ) : (
-              <FontAwesomeIcon icon={faTh} />
-            )}
+          <button
+            className={`toggle-button ${
+              layout === "grid" ? "active" : ""
+            } grid`}
+            onClick={() => setLayout("grid")}
+          >
+            <FontAwesomeIcon icon={faTh} />
+          </button>
+          <button
+            className={`toggle-button ${
+              layout === "list" ? "active" : ""
+            } list`}
+            onClick={() => setLayout("list")}
+          >
+            <FontAwesomeIcon icon={faBars} />
           </button>
         </div>
       </header>
@@ -339,8 +346,16 @@ function App() {
                 showFullscreenButton={false}
                 showIndex={true}
                 renderThumbInner={renderThumbnails}
-                onKeyPress={handleImageGalleryKeyPress}
+                ref={imageGalleryRef}
               />
+              <div className="zoom-buttons">
+                <button onClick={handleZoomIn} className="zoom-button">
+                  Zoom In
+                </button>
+                <button onClick={handleZoomOut} className="zoom-button">
+                  Zoom Out
+                </button>
+              </div>
             </Modal>
           )}
         </>
