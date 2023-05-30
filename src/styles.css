@@ -439,3 +439,30 @@ button:hover {
 .list {
   border-radius: 0px 5px 5px 0px;
 }
+
+/* styles.css */
+
+/* Rest of the CSS code... */
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #000000;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 24px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  opacity: 0.7;
+  padding: 0;
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+}
