@@ -20,6 +20,7 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const imageGalleryRef = useRef(null);
   const [showButton, setShowButton] = useState(false);
+  const parentRef = useRef(null);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -319,6 +320,28 @@ function App() {
     );
   };
 
+  const handleNewScroll = () => {
+    console.log("scrolling");
+    setShowButton(true);
+
+    const parentDiv = parentRef.current;
+    if (
+      parentDiv.scrollTop + parentDiv.clientHeight ===
+      parentDiv.scrollHeight
+    ) {
+      parentDiv.scrollTo(0, 0);
+    }
+    setShowButton(parentDiv.scrollTop > 0);
+  };
+
+  const scrollNewToTop = () => {
+    const parentDiv = parentRef.current;
+    parentDiv.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div>
       <header className="header">
@@ -353,6 +376,7 @@ function App() {
           >
             Refresh
           </button>
+          {/* <button onClick={scrollNewToTop}>Scroll to Top</button> */}
         </div>
         <div className="layout-toggle">
           <button
@@ -386,15 +410,19 @@ function App() {
             <>
               <div
                 className={
-                  layout === "grid" ? "grid-container customScrollBar" : "list-container customScrollBar"
+                  layout === "grid"
+                    ? "grid-container customScrollBar"
+                    : "list-container customScrollBar"
                 }
+                onScroll={handleNewScroll}
+                ref={parentRef}
               >
                 {renderImages()}
               </div>
             </>
           )}
           {showButton && (
-            <button className="scroll-to-top" onClick={scrollToTop}>
+            <button className="scroll-to-top" onClick={scrollNewToTop}>
               &#8679;
             </button>
           )}
