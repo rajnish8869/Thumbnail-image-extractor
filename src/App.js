@@ -6,6 +6,7 @@ import "./styles.css";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [file, setFile] = useState(null);
@@ -13,6 +14,7 @@ function App() {
   const [layout, setLayout] = useState("grid");
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedImages, setSelectedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -157,30 +159,57 @@ function App() {
 
     setShowError(false);
     const zip = new JSZip();
+    if (selectedImages.length === 0) {
+      extractedImages.forEach((image, index) => {
+        const base64Data = image.original.replace(
+          /^data:image\/jpeg;base64,/,
+          ""
+        );
+        const fileName = `extracted${(index + 1)
+          .toString()
+          .padStart(3, "0")}.jpg`;
+        zip.file(fileName, base64Data, { base64: true });
+      });
 
-    extractedImages.forEach((image, index) => {
-      const base64Data = image.original.replace(
-        /^data:image\/jpeg;base64,/,
-        ""
-      );
-      const fileName = `extracted${(index + 1)
-        .toString()
-        .padStart(3, "0")}.jpg`;
-      zip.file(fileName, base64Data, { base64: true });
-    });
+      try {
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        const zipUrl = URL.createObjectURL(zipBlob);
 
-    try {
-      const zipBlob = await zip.generateAsync({ type: "blob" });
-      const zipUrl = URL.createObjectURL(zipBlob);
+        const link = document.createElement("a");
+        link.href = zipUrl;
+        link.download = "extracted_images.zip";
+        link.click();
 
-      const link = document.createElement("a");
-      link.href = zipUrl;
-      link.download = "extracted_images.zip";
-      link.click();
+        URL.revokeObjectURL(zipUrl);
+      } catch (error) {
+        console.error("Error generating ZIP file:", error);
+      }
+    } else {
+      selectedImages.forEach((index) => {
+        const image = extractedImages[index];
+        const base64Data = image.original.replace(
+          /^data:image\/jpeg;base64,/,
+          ""
+        );
+        const fileName = `extracted${(index + 1)
+          .toString()
+          .padStart(3, "0")}.jpg`;
+        zip.file(fileName, base64Data, { base64: true });
+      });
 
-      URL.revokeObjectURL(zipUrl);
-    } catch (error) {
-      console.error("Error generating ZIP file:", error);
+      try {
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        const zipUrl = URL.createObjectURL(zipBlob);
+
+        const link = document.createElement("a");
+        link.href = zipUrl;
+        link.download = "selected_images.zip";
+        link.click();
+
+        URL.revokeObjectURL(zipUrl);
+      } catch (error) {
+        console.error("Error generating ZIP file:", error);
+      }
     }
   };
 
@@ -211,6 +240,10 @@ function App() {
     }
   };
 
+  const unselectAllImages = () => {
+    setSelectedImages([]);
+  };
+
   const renderImages = () => {
     if (extractedImages.length === 0) {
       return (
@@ -220,17 +253,35 @@ function App() {
       );
     }
 
+    const handleImageSelection = (index) => {
+      if (selectedImages.includes(index)) {
+        setSelectedImages(selectedImages.filter((i) => i !== index));
+      } else {
+        setSelectedImages([...selectedImages, index]);
+      }
+    };
+
     return extractedImages.map((image, index) => (
       <div
         key={index}
-        className={layout === "grid" ? "grid-item" : "list-item"}
+        className={` ${selectedImages.includes(index) ? "selected" : ""} ${
+          layout === "grid" ? "grid-item" : "list-item"
+        }`}
       >
-        <h3>{image.originalAlt}</h3>
+        <label className="Select-icon">
+          <input
+            type="checkbox"
+            checked={selectedImages.includes(index)}
+            onChange={() => handleImageSelection(index)}
+          />
+          <h3>{image.originalAlt}</h3>
+        </label>
         <img
           src={image.original}
           alt={image.originalAlt}
           onClick={() => openImageGallery(index)}
         />
+
         <button
           onClick={() => downloadImage(image.original, image.originalAlt)}
         >
@@ -346,6 +397,11 @@ function App() {
             <button className="scroll-to-top" onClick={scrollToTop}>
               &#8679;
             </button>
+          )}
+          {selectedImages.length > 0 && (
+            <div className="unselect-button" onClick={unselectAllImages}>
+              <FontAwesomeIcon icon={faTimes} />
+            </div>
           )}
           {isGalleryOpen && (
             <Modal
