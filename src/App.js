@@ -17,6 +17,14 @@ function App() {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const imageGalleryRef = useRef(null);
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -28,6 +36,16 @@ function App() {
     if (selectedFile) {
       setFile(selectedFile);
     }
+  };
+
+  const handleScroll = () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const shouldShowButton = scrollTop > 200;
+    setShowButton(shouldShowButton);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const extractImages = async () => {
@@ -323,6 +341,11 @@ function App() {
                 {renderImages()}
               </div>
             </>
+          )}
+          {showButton && (
+            <button className="scroll-to-top" onClick={scrollToTop}>
+              &#8679;
+            </button>
           )}
           {isGalleryOpen && (
             <Modal
