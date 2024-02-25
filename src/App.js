@@ -344,6 +344,35 @@ function App() {
   let [height, setHeight] = useState(null);
   useLayoutEffect(() => setHeight(container.current.offsetHeight), []);
 
+  const [mobileScreenHeight, setMobileScreenHeight] = useState(0);
+  useLayoutEffect(() => {
+    function getMobileScreenHeight() {
+      const isMobile = /Mobi/i.test(window.navigator.userAgent);
+      const hasOuterHeight = "outerHeight" in window;
+
+      if (isMobile && hasOuterHeight) {
+        return window.outerHeight;
+      }
+
+      return window.innerHeight;
+    }
+
+    function handleResize() {
+      setMobileScreenHeight(getMobileScreenHeight());
+    }
+
+    setMobileScreenHeight(getMobileScreenHeight());
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const adjustedHeight = mobileScreenHeight - height - 2;
+  console.log("adjustedHeight", adjustedHeight);
+
   return (
     <div>
       <header className="header" ref={container}>
@@ -473,7 +502,7 @@ function App() {
       ) : (
         <div
           className="loading-container"
-          style={{ height: `calc(100vh - 2px - ${height}px)` }}
+          style={{ height: `${adjustedHeight}px` }}
         >
           <h1>Please Select A File To Extract Image</h1>
         </div>
