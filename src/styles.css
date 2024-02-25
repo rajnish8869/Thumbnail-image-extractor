@@ -22,6 +22,15 @@ input[type="file"] {
   height: 18px;
 }
 
+@media (min-width: 769px) {
+  .header-actions {
+    display: flex;
+    align-items: center;
+    flex-flow: wrap;
+    justify-content: center;
+  }
+}
+
 .custom-file-input {
   display: inline-block;
   padding: 8px 12px;
@@ -35,7 +44,7 @@ input[type="file"] {
   width: 130px;
   text-align: center;
   transition: background-color 0.3s ease;
-  margin-right: 30px;
+  margin: 0px 5px;
 }
 
 .custom-file-input:hover {
@@ -85,6 +94,24 @@ button {
 }
 
 button:hover {
+  background-color: #555;
+}
+
+.header-actions button {
+  padding: 10px 10px;
+  background: #f5f5f5;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  margin: 0px 5px;
+}
+
+.header-actions button:hover {
   background-color: #555;
 }
 
@@ -156,6 +183,13 @@ button:hover {
   border: none;
   border-radius: 4px;
   align-self: center;
+  height: 100%;
+  width: auto;
+}
+
+.header-logo img {
+  height: 100%;
+  width: 100%;
 }
 
 .image-gallery {
@@ -244,6 +278,10 @@ button:hover {
     width: 100vw;
     height: auto;
   }
+
+  .header-logo {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -258,17 +296,25 @@ button:hover {
     height: auto;
   }
 
-  .header-logo {
-    font-size: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
   .header-actions {
     display: flex;
     align-items: center;
     flex-flow: wrap;
     justify-content: center;
+  }
+
+  .header-actions button {
+    padding: 10px 10px;
+    background: #f5f5f5;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin: 10px;
   }
 
   .header-button {
@@ -281,7 +327,7 @@ button:hover {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    width: 134px;
+    width: 149px;
     margin: 10px;
   }
 
@@ -292,14 +338,15 @@ button:hover {
   .custom-file-input {
     margin-left: 16px;
     padding: 8px 12px;
-    font-size: 14px;
+
+    font-size: 16px;
     font-weight: bold;
     background-color: #e9e9e9;
     color: #333;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    width: 110px;
+    width: 125px;
     margin-right: 10px;
     display: flex;
     justify-content: center;
@@ -367,7 +414,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 25px - 60px);
+ 
   background-color: #f5f5f5;
   border: 1px solid #ccc;
   border-radius: 4px;

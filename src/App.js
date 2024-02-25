@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import JSZip from "jszip";
 import Modal from "react-modal";
 import ImageGallery from "react-image-gallery";
@@ -7,6 +7,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh, faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import logo from "./asset/logo.jpg";
 
 function App() {
   const [file, setFile] = useState(null);
@@ -332,16 +333,23 @@ function App() {
 
   const scrollNewToTop = () => {
     const parentDiv = parentRef.current;
+
     parentDiv.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
 
+  let container = useRef(null);
+  let [height, setHeight] = useState(null);
+  useLayoutEffect(() => setHeight(container.current.offsetHeight), []);
+
   return (
     <div>
-      <header className="header">
-        <div className="header-logo">Extract Thumbnail Image</div>
+      <header className="header" ref={container}>
+        <div className="header-logo">
+          <img src={logo} alt="Extract Thumbnail Image" />
+        </div>
         <div className="header-actions">
           <label htmlFor="file-upload" className="custom-file-input">
             {file ? (
@@ -463,7 +471,10 @@ function App() {
           )}
         </>
       ) : (
-        <div className="loading-container">
+        <div
+          className="loading-container"
+          style={{ height: `calc(100vh - 2px - ${height}px)` }}
+        >
           <h1>Please Select A File To Extract Image</h1>
         </div>
       )}
