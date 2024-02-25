@@ -82,7 +82,8 @@ function App() {
         const jpg = tdata.slice(x1, x2 + 1);
         count++;
 
-        const fname = `extracted${count.toString().padStart(3, "0")}.jpg`;
+        const fname = `Image-${count.toString().padStart(3, "0")}.jpg`;
+
         const dataUrl = await createDataUrl(jpg.buffer);
 
         extracted.push({ original: dataUrl, originalAlt: fname });
@@ -90,7 +91,6 @@ function App() {
       }
 
       setExtractedImages(extracted);
-      console.log(`Extracted ${count} JPEG images`);
     } catch (error) {
       console.error("Error extracting images:", error);
     } finally {
@@ -152,7 +152,6 @@ function App() {
 
   const downloadAllImages = async () => {
     if (extractedImages.length === 0) {
-      console.log("No images to download");
       setShowError(true);
       setErrorMessage("No images to download");
       return;
@@ -166,9 +165,8 @@ function App() {
           /^data:image\/jpeg;base64,/,
           ""
         );
-        const fileName = `extracted${(index + 1)
-          .toString()
-          .padStart(3, "0")}.jpg`;
+        const fileName = `Image-${(index + 1).toString().padStart(3, "0")}.jpg`;
+
         zip.file(fileName, base64Data, { base64: true });
       });
 
@@ -192,9 +190,8 @@ function App() {
           /^data:image\/jpeg;base64,/,
           ""
         );
-        const fileName = `extracted${(index + 1)
-          .toString()
-          .padStart(3, "0")}.jpg`;
+        const fileName = `Image-${(index + 1).toString().padStart(3, "0")}.jpg`;
+
         zip.file(fileName, base64Data, { base64: true });
       });
 
@@ -321,7 +318,6 @@ function App() {
   };
 
   const handleNewScroll = () => {
-    console.log("scrolling");
     setShowButton(true);
 
     const parentDiv = parentRef.current;
