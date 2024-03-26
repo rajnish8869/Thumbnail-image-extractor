@@ -17,6 +17,10 @@ Extract Thumbnail Image is a React application that allows users to upload a fil
 - react-image-gallery: A customizable image gallery component for React.
 - Font Awesome: A library of icons for web development.
 
+## Live Demo
+
+You can try the live demo [here](https://extract-thumbnail-image.netlify.app/).
+
 ## Installation
 
 1. Clone the repository:
