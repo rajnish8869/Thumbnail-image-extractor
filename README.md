@@ -21,6 +21,15 @@ Extract Thumbnail Image is a React application that allows users to upload a fil
 
 You can try the live demo [here](https://extract-thumbnail-image.netlify.app/).
 
+## Added Test File
+
+To test the feature for downloading images, a test file has been included. You can find the test file in the repository under the following path:
+
+- `Dummy_images_file`
+
+This file can be used to verify the functionality of downloading images after extraction.
+
+
 ## Installation
 
 1. Clone the repository:
