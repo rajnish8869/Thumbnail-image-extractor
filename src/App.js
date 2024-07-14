@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
-import JSZip from "jszip";
 import Modal from "react-modal";
 import ImageGallery from "react-image-gallery";
 import "./styles.css";
@@ -7,7 +6,11 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh, faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import logo from "./asset/logo.jpg";
+import logo from "./asset/logo.png";
+import downloadAllImages from "./downloadAllImages";
+import downloadImage from "./downloadImage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [file, setFile] = useState(null);
@@ -46,10 +49,6 @@ function App() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const shouldShowButton = scrollTop > 200;
     setShowButton(shouldShowButton);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const extractImages = async () => {
@@ -143,77 +142,17 @@ function App() {
     }
     return -1;
   };
-
-  const downloadImage = (dataUrl, fname) => {
-    const link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = fname;
-    link.click();
+  const handleDownloadImage = (dataUrl, fname) => {
+    downloadImage(dataUrl, fname);
   };
 
-  const downloadAllImages = async () => {
-    if (extractedImages.length === 0) {
-      setShowError(true);
-      setErrorMessage("No images to download");
-      return;
-    }
-
-    setShowError(false);
-    const zip = new JSZip();
-    if (selectedImages.length === 0) {
-      extractedImages.forEach((image, index) => {
-        const base64Data = image.original.replace(
-          /^data:image\/jpeg;base64,/,
-          ""
-        );
-        const fileName = `Image-${(index + 1).toString().padStart(3, "0")}.jpg`;
-
-        zip.file(fileName, base64Data, { base64: true });
-      });
-
-      try {
-        const zipBlob = await zip.generateAsync({ type: "blob" });
-        const zipUrl = URL.createObjectURL(zipBlob);
-
-        const link = document.createElement("a");
-        link.href = zipUrl;
-        link.download = "extracted_images.zip";
-        link.click();
-
-        URL.revokeObjectURL(zipUrl);
-      } catch (error) {
-        console.error("Error generating ZIP file:", error);
-      }
-    } else {
-      selectedImages.forEach((index) => {
-        const image = extractedImages[index];
-        const base64Data = image.original.replace(
-          /^data:image\/jpeg;base64,/,
-          ""
-        );
-        const fileName = `Image-${(index + 1).toString().padStart(3, "0")}.jpg`;
-
-        zip.file(fileName, base64Data, { base64: true });
-      });
-
-      try {
-        const zipBlob = await zip.generateAsync({ type: "blob" });
-        const zipUrl = URL.createObjectURL(zipBlob);
-
-        const link = document.createElement("a");
-        link.href = zipUrl;
-        link.download = "selected_images.zip";
-        link.click();
-
-        URL.revokeObjectURL(zipUrl);
-      } catch (error) {
-        console.error("Error generating ZIP file:", error);
-      }
-    }
-  };
-
-  const toggleLayout = () => {
-    setLayout((prevLayout) => (prevLayout === "grid" ? "list" : "grid"));
+  const handleDownloadAllImages = () => {
+    downloadAllImages(
+      extractedImages,
+      selectedImages,
+      setShowError,
+      setErrorMessage
+    );
   };
 
   const openImageGallery = (index) => {
@@ -282,7 +221,7 @@ function App() {
         />
 
         <button
-          onClick={() => downloadImage(image.original, image.originalAlt)}
+          onClick={() => handleDownloadImage(image.original, image.originalAlt)}
         >
           Download
         </button>
@@ -375,6 +314,18 @@ function App() {
 
   return (
     <div>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+      />
       <header className="header" ref={container}>
         <div className="header-logo">
           <img src={logo} alt="Extract Thumbnail Image" />
@@ -400,8 +351,8 @@ function App() {
           <button onClick={extractImages} className="header-button">
             Extract Images
           </button>
-          <button onClick={downloadAllImages} className="header-button">
-            Download All
+          <button onClick={handleDownloadAllImages} className="header-button">
+            {selectedImages.length > 0 ? "Download Selected" : "Download All"}
           </button>
           <button
             onClick={() => window.location.reload()}
@@ -409,7 +360,7 @@ function App() {
           >
             Refresh
           </button>
-          {/* <button onClick={scrollNewToTop}>Scroll to Top</button> */}
+          {}
         </div>
         <div className="layout-toggle">
           <button
