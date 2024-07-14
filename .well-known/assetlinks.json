@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.ionic.ThumbnailImageExtractor",
+      "sha256_cert_fingerprints": [
+        "0503074E8A338FB4E19292CB5947512F02693D810D1AAF5650A60A53D1697AB7"
+      ]
+    }
+  }
+]
